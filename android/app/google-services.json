@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "717298660760",
+    "project_id": "himatif-event",
+    "storage_bucket": "himatif-event.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717298660760:android:e8a81868512abbbd6f67ed",
+        "android_client_info": {
+          "package_name": "com.si.himatif_event"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717298660760-auq1c3v00o8hu4d4jc17qilf0t26df1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj19bQilD2mXBmI1QcUPzwZp3qWlG6OZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717298660760-auq1c3v00o8hu4d4jc17qilf0t26df1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
