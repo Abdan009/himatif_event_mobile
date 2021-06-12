@@ -15,21 +15,21 @@ List<BannerPromo> mockBanner = [
   BannerPromo(
     id: '1',
     bannerUrl:
-        'https://ecs7.tokopedia.net/img/blog/seller/2020/10/SC2-768x400.jpg',
+        'https://i.pinimg.com/originals/0f/94/f1/0f94f1a8785e703b34540cd5a6bcf3e0.jpg',
   ),
   BannerPromo(
     id: '2',
     bannerUrl:
-        'https://ecs7.tokopedia.net/img/blog/seller/2020/10/SC2-768x400.jpg',
+        'https://jagokata.com/images/upload/chairul-tanjung-kemenangan-bukanlah-prioritas-utama-dalam-suatu-perlombaan.jpg',
   ),
   BannerPromo(
     id: '3',
     bannerUrl:
-        'https://img.freepik.com/free-vector/sale-banner-template-design_74379-121.jpg?size=626&ext=jpg&ga=GA1.2.1588707983.1618358400',
+        'https://i1.wp.com/titikdua.net/wp-content/uploads/2018/10/Kata-kata-motivasi-Islami.jpg?resize=800%2C450',
   ),
   BannerPromo(
     id: '4',
     bannerUrl:
-        'https://img.freepik.com/free-vector/sale-banner-template-design_74379-121.jpg?size=626&ext=jpg&ga=GA1.2.1588707983.1618358400',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzxXD8Z6Q92PRHB_McMdd7q7h_KeTXSwf4mu18YLXmN4Hf5LETb24b9e3S9IoPoxjjxNs&usqp=CAU',
   ),
 ];

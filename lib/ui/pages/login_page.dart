@@ -123,10 +123,9 @@ class _LoginPageState extends State<LoginPage> {
                       .login(emailController.text, passwordController.text);
                   var state = context.read<UsersCubit>().state;
                   if (state is UsersLoaded) {
-                    context.read<EventCubit>().getListEvent();
-                    context.read<CategoryCubit>().getListCategory();
-
-                    Get.offAll(() => HomeAdminPage());
+                    Get.offAll(
+                      () => WrapperUser(),
+                    );
                   } else {
                     setState(() {
                       isLogin = false;

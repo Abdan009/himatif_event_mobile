@@ -119,13 +119,13 @@ class Users extends Equatable {
 List<Users> mockUser = [
   Users(
     id: 1,
-    email: 'abdanmaruf@gmail.com',
-    name: 'Dadan',
+    email: 'ayundaRyn@gmail.com',
+    name: 'Ayunda Riyanti',
     majors: 'Teknik Informatika',
     studyProgram: 'D4 RPL',
     yearGeneration: '2018',
     photoURL:
-        'https://asset-a.grid.id/crop/0x0:0x0/360x240/photo/2019/10/22/3877025586.jpg',
+        "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png",
     phoneNumber: '08971613199',
     roles: 'mahasiswa',
     tokenNotif: 'test',
@@ -135,7 +135,7 @@ List<Users> mockUser = [
   Users(
     id: 2,
     email: 'maruf@gmail.com',
-    name: 'Abdan',
+    name: 'Muhamad Abdan',
     majors: 'Teknik Informatika',
     studyProgram: 'D4 RPL',
     yearGeneration: '2018',
@@ -149,13 +149,13 @@ List<Users> mockUser = [
   ),
   Users(
     id: 3,
-    email: 'abdan@gmail.com',
-    name: 'Abdan Dadan',
+    email: 'reynegodep@gmail.com',
+    name: 'Reynego Depari',
     majors: 'Teknik Informatika',
     studyProgram: 'D4 RPL',
     yearGeneration: '2018',
     photoURL:
-        'https://asset-a.grid.id/crop/0x0:0x0/360x240/photo/2019/10/22/3877025586.jpg',
+        "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png",
     phoneNumber: '08971613199',
     roles: 'mahasiswa',
     tokenNotif: 'test',

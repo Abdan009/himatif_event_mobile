@@ -1,6 +1,13 @@
 part of '../pages.dart';
 
-class HomeMhsPage extends StatelessWidget {
+class HomeMhsPage extends StatefulWidget {
+  @override
+  _HomeMhsPageState createState() => _HomeMhsPageState();
+}
+
+class _HomeMhsPageState extends State<HomeMhsPage> {
+  TextEditingController searchController = TextEditingController();
+  String search = "";
   @override
   Widget build(BuildContext context) {
     // CarouselController carouselController = CarouselController();
@@ -16,14 +23,6 @@ class HomeMhsPage extends StatelessWidget {
         ),
         actions: [
           Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Icon(Icons.search, color: accentColor2),
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: Icon(Icons.message, color: accentColor2),
-          ),
-          Container(
             margin: EdgeInsets.only(right: 15),
             child: Icon(Icons.notifications, color: accentColor2),
           ),
@@ -37,66 +36,131 @@ class HomeMhsPage extends StatelessWidget {
             buildCarouserlSlider(context),
             buildKategoriEvent(context),
             BlocBuilder<CategoryCubit, CategoryState>(
-              builder: (_, categoryState) =>
-                  BlocBuilder<EventCubit, EventState>(
-                builder: (_, eventState) {
-                  if (eventState is EventLoaded) {
-                    List<EventInfo> listEvent = eventState.listEvent;
-                    if ((categoryState as CategoryLoaded).category != 'Semua') {
-                      listEvent = listEvent
-                          .where((element) =>
-                              element.category ==
-                              (categoryState as CategoryLoaded).category)
-                          .toList();
-                    }
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-                      child: (listEvent.isNotEmpty)
-                          ? Column(
-                              children: List.generate(
-                                listEvent.length,
-                                (index) => Container(
-                                  margin: EdgeInsets.only(
-                                    bottom: (index == listEvent.length - 1)
-                                        ? 30
-                                        : 15,
-                                    top: (index == 0) ? 10 : 0,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                        () => DetailEventMhsPage(
-                                          listEvent[index],
-                                        ),
-                                      );
-                                    },
-                                    child: CardListEventWidget(
-                                      listEvent[index],
-                                    ),
-                                  ),
+                builder: (_, categoryState) {
+              if (categoryState is CategoryLoaded) {
+                return BlocBuilder<EventCubit, EventState>(
+                  builder: (_, eventState) {
+                    if (eventState is EventLoaded) {
+                      // List<EventInfo> listEvent = eventState.listEvent;
+                      context.read<EventCubit>().getListMyContributionEvent(
+                          (context.read<UsersCubit>().state as UsersLoaded)
+                              .user
+                              .id);
+                      List<EventInfo> listEvent = eventState.listEvent
+                          .where(
+                            (element) =>
+                                element.status == 'Publish' &&
+                                element.timeReglimit.isAfter(
+                                  DateTime.now(),
                                 ),
-                              ),
-                            )
-                          : Center(
-                              child: Text('Tidak terdapat event',
-                                  style: fontTitle),
-                            ),
-                    );
-                  } else if (eventState is EventFailed) {
-                    return Center(
-                        child: Text('Terjadi masalah, harap coba kembali !'));
-                  } else {
-                    return Column(
-                      children: [
-                        Container(height: 30, width: 30, child: loading(4.0)),
-                      ],
-                    );
-                  }
-                },
-              ),
-            )
+                          )
+                          .toList();
+                      if (categoryState.category != 'Semua') {
+                        listEvent = listEvent
+                            .where((element) =>
+                                element.category == categoryState.category)
+                            .toList();
+                      }
+
+                      if (search != "") {
+                        listEvent = listEvent
+                            .where((element) => element.name
+                                .toLowerCase()
+                                .contains(search.toLowerCase()))
+                            .toList();
+                      }
+                      return Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: defaultMargin),
+                              child: buildSearchWidget()),
+                          Container(
+                            margin:
+                                EdgeInsets.symmetric(horizontal: defaultMargin),
+                            child: (listEvent.isNotEmpty)
+                                ? Container(
+                                    child: Column(
+                                      children: List.generate(
+                                        listEvent.length,
+                                        (index) => Container(
+                                          margin: EdgeInsets.only(
+                                            bottom:
+                                                (index == listEvent.length - 1)
+                                                    ? 30
+                                                    : 15,
+                                            top: (index == 0) ? 10 : 0,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.to(
+                                                () => DetailEventMhsPage(
+                                                  listEvent[index],
+                                                ),
+                                              );
+                                            },
+                                            child: CardListEventWidget(
+                                              listEvent[index],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Center(
+                                    child: Text('Tidak terdapat event',
+                                        style: fontTitle),
+                                  ),
+                          ),
+                        ],
+                      );
+                    } else if (eventState is EventFailed) {
+                      return Center(
+                          child: Text('Terjadi masalah, harap coba kembali !'));
+                    } else {
+                      return Column(
+                        children: [
+                          Container(height: 30, width: 30, child: loading(4.0)),
+                        ],
+                      );
+                    }
+                  },
+                );
+              } else {
+                return Column(
+                  children: [
+                    Container(height: 30, width: 30, child: loading(4.0)),
+                  ],
+                );
+              }
+            })
           ],
         ),
+      ),
+    );
+  }
+
+  Container buildSearchWidget() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      child: FieldCustomWidget(
+        hint: 'Cari Event',
+        controller: searchController,
+        primaryColor: accentColor1,
+        prefixIcon: Icon(Icons.search, color: mainColor),
+        suffixIcon: (search.trim() != "")
+            ? GestureDetector(
+                onTap: () {
+                  searchController.text = "";
+                  search = "";
+                  setState(() {});
+                },
+                child: Icon(Icons.clear))
+            : null,
+        onChange: (value) {
+          search = value;
+          setState(() {});
+        },
       ),
     );
   }
@@ -150,7 +214,7 @@ class HomeMhsPage extends StatelessWidget {
             ),
           );
         } else {
-          return loading(2);
+          return Container();
         }
       },
     );

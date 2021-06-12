@@ -10,24 +10,40 @@ part 'event_state.dart';
 class EventCubit extends Cubit<EventState> {
   EventCubit() : super(EventInitial());
 
-  Future<void> getListEvent() async {
+  Future<void> getListEvent(int idUser) async {
     ApiReturnValue result = await EventServicesApi.getEvent();
     if (result.value != null) {
       emit(EventLoaded(listEvent: result.value));
+      getListMyContributionEvent(idUser);
     } else {
       emit(EventFailed(result.message));
     }
   }
 
+  void getListMyContributionEvent(int idUser) {
+    List<EventInfo> listMyContribution = (state as EventLoaded)
+        .listEvent
+        .where((element) => element.idUser == idUser)
+        .toList();
+    emit((state as EventLoaded)
+        .copyWith(myContributionEvent: listMyContribution));
+  }
+
   Future<void> addEvent(EventInfo event, File filePoster) async {
     ApiReturnValue result = await EventServicesApi.addEvent(event, filePoster);
     if (result.value != null) {
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Event Baru Berhasil Ditambahkan',
-          'Selamat event baru anda berhasil ditambahkan',
-          topic: 'mahasiswa');
-      emit(EventLoaded(
+      if (event.user.roles == 'admin') {
+        await NotifikasiServices.sendAndRetrieveMessage(
+            'Terdapat Event baru', '${event.name} mari ikuti eventnya ! ',
+            topic: 'mahasiswa');
+      } else {
+        await NotifikasiServices.sendAndRetrieveMessage(
+            'Terdapat Kontibusi Event', '${event.name} ',
+            topic: 'admin');
+      }
+      emit((state as EventLoaded).copyWith(
           listEvent: (state as EventLoaded).listEvent + [result.value]));
+      getListMyContributionEvent(event.idUser);
     } else {
       emit(EventFailed(result.message));
     }
@@ -44,30 +60,24 @@ class EventCubit extends Cubit<EventState> {
           return value;
         }
       }).toList();
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Berhasil DiUpdate', 'Event anda berhasil di Update',
-          topic: 'mahasiswa');
-
-      emit(EventLoaded(listEvent: listEvent));
+      emit((state as EventLoaded).copyWith(listEvent: listEvent));
+      getListMyContributionEvent(event.idUser);
     } else {
       emit(EventFailed(result.message));
     }
   }
 
-  Future<void> deleteEvent(int id) async {
-    ApiReturnValue<bool> result = await EventServicesApi.deleteEvent(id);
+  Future<void> deleteEvent(EventInfo event) async {
+    ApiReturnValue<bool> result = await EventServicesApi.deleteEvent(event.id);
     if (result.value == true) {
       final listEvent = (state as EventLoaded)
           .listEvent
-          .where((element) => element.id != id)
+          .where((element) => element.id != event.id)
           .toList();
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Berhasil Dihapus', 'Event anda berhasil di Hapus',
-          topic: 'mahasiswa');
-
       emit(
-        EventLoaded(listEvent: listEvent),
+        (state as EventLoaded).copyWith(listEvent: listEvent),
       );
+      getListMyContributionEvent(event.idUser);
     } else {
       emit(EventFailed(result.message));
     }

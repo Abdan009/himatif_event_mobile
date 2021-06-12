@@ -15,14 +15,25 @@ class UsersCubit extends Cubit<UsersState> {
   Future<void> getUser() async {
     ApiReturnValue<Users> result = await UsersServicesApi.getUser();
     if (result.value != null) {
-      emit(UsersLoaded(result.value));
+      emit((state as UsersLoaded).copyWith(user: result.value));
     } else {
       emit(UsersFailed(result.message));
     }
   }
 
-  Future<void> toUserLoaded() async {
-    emit(UsersLoaded(null));
+  Future<void> getAllUser() async {
+    ApiReturnValue<List<Users>> result = await UsersServicesApi.getAllUser();
+    if (result.value != null) {
+      emit((state as UsersLoaded).copyWith(
+        listUser: result.value,
+      ));
+    } else {
+      emit(UsersFailed(result.message));
+    }
+  }
+
+  void toUserLoaded() {
+    emit(UsersLoaded(user: null));
   }
 
   Future<void> login(String email, String password) async {
@@ -33,7 +44,7 @@ class UsersCubit extends Cubit<UsersState> {
       localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', Users.token);
 
-      emit(UsersLoaded(result.value));
+      emit((state as UsersLoaded).copyWith(user: result.value));
     } else {
       emit(UsersFailed(result.message));
     }
@@ -45,9 +56,7 @@ class UsersCubit extends Cubit<UsersState> {
         pictureFile: photoProfile);
 
     if (result.value != null) {
-      // localStorage = await SharedPreferences.getInstance();
-      // localStorage.setString('token', Users.token);
-      emit(UsersLoaded(result.value));
+      emit((state as UsersLoaded).copyWith(user: result.value));
     } else {
       emit(UsersFailed(result.message));
     }
@@ -56,6 +65,11 @@ class UsersCubit extends Cubit<UsersState> {
   Future<void> logout() async {
     localStorage = await SharedPreferences.getInstance();
     localStorage.remove('token');
-    emit(UsersLoaded(null));
+    ApiReturnValue isLogout = await UsersServicesApi.logout();
+    if (isLogout.value == true) {
+      emit(UsersLoaded(user: null));
+    } else {
+      emit(UsersFailed('Logout Gagal'));
+    }
   }
 }

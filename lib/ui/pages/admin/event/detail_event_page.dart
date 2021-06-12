@@ -13,143 +13,310 @@ class DetailEventAdminPage extends StatelessWidget {
       return Scaffold(
         appBar: appBar(
           event?.name ?? '',
-          // actions: [
-          //   GestureDetector(
-          //     onTap: () {
-          //       loadingDialog(context).show();
+          actions: [
+            GestureDetector(
+              onTap: () {
+                loadingDialog(context).show();
 
-          //       context.read<EventCubit>().deleteEvent(event.id).then(
-          //         (value) {
-          //           loadingDialog(context).hide();
-          //           Get.back();
-          //         },
-          //       );
-          //     },
-          //     child: Container(
-          //       margin: EdgeInsets.only(right: defaultMargin),
-          //       child: Icon(
-          //         Icons.delete,
-          //         color: Colors.red,
-          //       ),
-          //     ),
-          //   )
-          // ],
+                context.read<EventCubit>().deleteEvent(eventParm).then(
+                  (value) {
+                    loadingDialog(context).hide();
+                    Get.back();
+                  },
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: defaultMargin),
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+              ),
+            )
+          ],
         ),
         body: Container(
           child: Stack(
             children: [
-              ListView(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: CacheImageCustom(
-                      url: event.posterEvent,
-                      imageBuilder: (_, imageProv) => Container(
-                        height: Get.height * 0.5,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: imageProv, fit: BoxFit.contain),
+              if (event != null)
+                ListView(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: CacheImageCustom(
+                        url: event.posterEvent,
+                        imageBuilder: (_, imageProv) => Container(
+                          height: Get.height * 0.5,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: imageProv, fit: BoxFit.contain),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                          margin: EdgeInsets.only(bottom: 10),
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: mainColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              event.category,
-                              style: fontSubtitle.copyWith(color: Colors.white),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
+                            margin: EdgeInsets.only(bottom: 10),
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: mainColor,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                event.category,
+                                style:
+                                    fontSubtitle.copyWith(color: Colors.white),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 50,
-                          width: Get.width - (2 * defaultMargin),
-                          child: Text(
-                            event.name,
-                            style: fontTitle.copyWith(fontSize: 20),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          Container(
+                            height: 50,
+                            width: Get.width - (2 * defaultMargin),
+                            child: Text(
+                              event.name,
+                              style: fontTitle.copyWith(fontSize: 20),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Divider(
-                    height: 20,
-                    thickness: 5,
-                    color: accentColor1,
-                  ),
-                  buildTimeEvent(
-                      'Jadwal Pelaksanaan',
-                      Icons.calendar_today,
-                      event.timeStart.dateAndTimeLahir,
-                      event.timeStart.clockTime),
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: accentColor1,
-                  ),
-                  buildTimeEvent(
-                      'Batas Pendaftaran',
-                      Icons.alarm,
-                      event.timeReglimit.dateAndTimeLahir,
-                      event.timeReglimit.clockTime),
-                  Divider(
-                    height: 20,
-                    thickness: 5,
-                    color: accentColor1,
-                  ),
-                  buildBodyEvent('Biaya', event.cost),
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: accentColor1,
-                  ),
-                  buildBodyEvent('Lokasi', event.location),
-                  Divider(
-                    height: 20,
-                    thickness: 5,
-                    color: accentColor1,
-                  ),
-                  buildOrganizer(event),
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: accentColor1,
-                  ),
-                  buildBodyEvent('Deskripsi', event.description),
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: accentColor1,
-                  ),
-                  buildBodyEvent(
-                      'Persyaratan dan Ketentuan', event.requirements),
-                  Divider(
-                    height: 20,
-                    thickness: 2,
-                    color: accentColor1,
-                  ),
-                  buildBodyEvent('Keuntungan/Manfaat', event.benefits),
-                  SizedBox(
-                    height: 100,
-                  ),
-                ],
-              ),
+                    Divider(
+                      height: 20,
+                      thickness: 5,
+                      color: accentColor1,
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Status',
+                            style: blackTextFont.copyWith(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  event.status + "  ",
+                                  style: orangeTextFont.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                if ((context.read<UsersCubit>().state
+                                            as UsersLoaded)
+                                        .user
+                                        .roles !=
+                                    'mahasiswa')
+                                  GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => Dialog(
+                                                  child: Container(
+                                                    height: 200,
+                                                    margin: EdgeInsets.all(20),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          'Ubah Status',
+                                                          style: blackTextFont
+                                                              .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 18),
+                                                        ),
+                                                        Container(
+                                                          width: Get.width,
+                                                          height: 40,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10,
+                                                                  top: 20),
+                                                          child: ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              primary:
+                                                                  mainColor,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              await editStatusEvent(
+                                                                  context,
+                                                                  event,
+                                                                  'Pending');
+                                                            },
+                                                            child: Text(
+                                                              'Pending',
+                                                              style: whiteTextFont
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: Get.width,
+                                                          height: 40,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10),
+                                                          child: ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              primary:
+                                                                  mainColor,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              await editStatusEvent(
+                                                                  context,
+                                                                  event,
+                                                                  'Publish');
+                                                            },
+                                                            child: Text(
+                                                              'Publish',
+                                                              style: whiteTextFont
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          width: Get.width,
+                                                          height: 40,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  bottom: 10),
+                                                          child: ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              primary:
+                                                                  Colors.red,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              await editStatusEvent(
+                                                                  context,
+                                                                  event,
+                                                                  'Canceled');
+                                                            },
+                                                            child: Text(
+                                                              'Canceled',
+                                                              style: whiteTextFont
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ));
+                                      },
+                                      child:
+                                          Icon(Icons.edit, color: mainColor)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      height: 20,
+                      thickness: 5,
+                      color: accentColor1,
+                    ),
+                    buildTimeEvent(
+                        'Jadwal Pelaksanaan',
+                        Icons.calendar_today,
+                        event.timeStart.dateAndTimeLahir,
+                        event.timeStart.clockTime),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: accentColor1,
+                    ),
+                    buildTimeEvent(
+                        'Batas Pendaftaran',
+                        Icons.alarm,
+                        event.timeReglimit.dateAndTimeLahir,
+                        event.timeReglimit.clockTime),
+                    Divider(
+                      height: 20,
+                      thickness: 5,
+                      color: accentColor1,
+                    ),
+                    buildBodyEvent('Biaya', event.cost),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: accentColor1,
+                    ),
+                    buildBodyEvent('Lokasi', event.location),
+                    Divider(
+                      height: 20,
+                      thickness: 5,
+                      color: accentColor1,
+                    ),
+                    buildOrganizer(event),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: accentColor1,
+                    ),
+                    buildBodyEvent('Deskripsi', event.description),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: accentColor1,
+                    ),
+                    buildBodyEvent(
+                        'Persyaratan dan Ketentuan', event.requirements),
+                    Divider(
+                      height: 20,
+                      thickness: 2,
+                      color: accentColor1,
+                    ),
+                    buildBodyEvent('Keuntungan/Manfaat', event.benefits),
+                    SizedBox(
+                      height: 100,
+                    ),
+                  ],
+                ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -173,46 +340,51 @@ class DetailEventAdminPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.favorite_border,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(() => UsersRegistrationPage(event.id));
+                          },
+                          child: Container(
+                            height: 40,
+                            margin: EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
                               color: mainColor,
-                              size: 30,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                            SizedBox(
-                              width: 10,
+                            child: Center(
+                              child: Text(
+                                'Cek Pendaftar',
+                                style: fontTitle.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                            Icon(
-                              Icons.share,
-                              color: mainColor,
-                              size: 30,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            () => UpdateEventAdminPage(
-                              event: event,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () => UpdateEventAdminPage(
+                                event: event,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 40,
+                            margin: EdgeInsets.only(left: 20),
+                            decoration: BoxDecoration(
+                              color: mainColor,
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                          );
-                        },
-                        child: Container(
-                          height: 40,
-                          width: Get.width * 0.5,
-                          margin: EdgeInsets.only(left: 20),
-                          decoration: BoxDecoration(
-                            color: mainColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Update',
-                              style: fontTitle.copyWith(
-                                color: Colors.white,
+                            child: Center(
+                              child: Text(
+                                'Update',
+                                style: fontTitle.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -362,5 +534,26 @@ class DetailEventAdminPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future editStatusEvent(
+      BuildContext context, EventInfo event, String status) async {
+    loadingDialog(context, message: "Mengubah Status event").show();
+    await context
+        .read<EventCubit>()
+        .updateEvent(event.copyWith(status: status), null);
+    EventState state = context.read<EventCubit>().state;
+    if (state is EventLoaded) {
+      loadingDialog(
+        context,
+      ).hide();
+      Get.back();
+    } else {
+      flushbar('Mengedit status event gagal, harap mencoba kembali !', context);
+      loadingDialog(
+        context,
+      ).hide();
+      Get.back();
+    }
   }
 }

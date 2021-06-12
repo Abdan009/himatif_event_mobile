@@ -142,7 +142,7 @@ class EventInfo extends Equatable {
     String name,
     String cost,
     String posterEvent,
-    String cotegory,
+    String category,
     String location,
     String benefits,
     String requirements,

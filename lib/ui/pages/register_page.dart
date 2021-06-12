@@ -283,7 +283,9 @@ class _SignUpFormPageState extends State<SignUpFormPage> {
                                     );
                                 var state = context.read<UsersCubit>().state;
                                 if (state is UsersLoaded) {
-                                  context.read<EventCubit>().getListEvent();
+                                  context
+                                      .read<EventCubit>()
+                                      .getListEvent(state.user.id);
                                   context
                                       .read<CategoryCubit>()
                                       .getListCategory();

@@ -20,3 +20,6 @@ part 'selectable_box.dart';
 part 'card_list_event_widget.dart';
 part 'image_cache.dart';
 part 'search_widget.dart';
+part 'member_join_widget.dart';
+part 'bottom_button_widget.dart';
+part 'field_custom_widget.dart';

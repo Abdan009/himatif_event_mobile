@@ -89,11 +89,13 @@ class _EventAdminPageState extends State<EventAdminPage> {
                                   top: (index == 0) ? 10 : 0,
                                 ),
                                 child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(
+                                    onTap: () async {
+                                      await Get.to(
                                         () => DetailEventAdminPage(
                                             listEvent[index]),
-                                      );
+                                      ).then((value) {
+                                        setState(() {});
+                                      });
                                     },
                                     child:
                                         CardListEventWidget(listEvent[index])),

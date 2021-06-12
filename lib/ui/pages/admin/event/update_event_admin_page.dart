@@ -100,7 +100,10 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
                         runSpacing: 24,
                         children: generateSelectCategory(
                           context,
-                          (categoryState as CategoryLoaded).listCategory,
+                          (categoryState as CategoryLoaded)
+                              .listCategory
+                              .where((element) => element.name != "Semua")
+                              .toList(),
                         ),
                       ),
                     ),
@@ -303,7 +306,7 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
 
                             (isNextValidasi)
                                 ? await nextValidasi(
-                                    (userState as UsersLoaded).user.id, context)
+                                    (userState as UsersLoaded).user, context)
                                 : print("ERROR- update event");
                           },
                         ),
@@ -323,7 +326,7 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
     );
   }
 
-  Future nextValidasi(int idUser, BuildContext context) async {
+  Future nextValidasi(Users user, BuildContext context) async {
     if (!(nameController.text.trim() != "" &&
         descriptionController.text.trim() != "" &&
         locationController.text.trim() != "" &&
@@ -346,10 +349,11 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
       EventInfo event;
       if (widget.event == null) {
         event = EventInfo(
-            idUser: idUser,
+            idUser: user.id,
             name: nameController.text,
             cost: costController.text,
             posterEvent: '',
+            user: user,
             description: descriptionController.text,
             category: selectedCategory,
             location: locationController.text,
@@ -357,7 +361,7 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
             requirements: requirementsController.text,
             timeStart: timeStart,
             timeReglimit: timeRegLimit,
-            status: 'Publish',
+            status: (user.roles == 'admin') ? 'Publish' : 'Pending',
             organizer: penyelenggaraControler.text,
             contactOrganizer: kontakPenyelenggaraController.text,
             timeCreate: DateTime.now(),
@@ -382,6 +386,7 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
             benefits: benefitController.text,
             requirements: requirementsController.text,
             timeStart: timeStart,
+            category: selectedCategory,
             timeReglimit: timeRegLimit,
             organizer: penyelenggaraControler.text,
             contactOrganizer: kontakPenyelenggaraController.text,
@@ -396,6 +401,8 @@ class _UpdateEventAdminPageState extends State<UpdateEventAdminPage> {
           },
         ).catchError(
           (e) {
+            print('error');
+            print(e);
             loadingDialog(context).hide();
             flushbar('Terjadi kesalahan saat upload : $e', context);
           },

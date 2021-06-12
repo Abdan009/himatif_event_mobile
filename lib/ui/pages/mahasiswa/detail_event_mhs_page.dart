@@ -153,27 +153,27 @@ class DetailEventMhsPage extends StatelessWidget {
                       Container(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.favorite_border,
-                              color: mainColor,
-                              size: 30,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Icon(
-                              Icons.share,
-                              color: mainColor,
-                              size: 30,
-                            ),
+                            // Icon(
+                            //   Icons.favorite_border,
+                            //   color: mainColor,
+                            //   size: 30,
+                            // ),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                            // Icon(
+                            //   Icons.share,
+                            //   color: mainColor,
+                            //   size: 30,
+                            // ),
                           ],
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
                           Get.to(
-                            () => UpdateEventAdminPage(
-                              event: event,
+                            () => RegistrationEventPage(
+                              event,
                             ),
                           );
                         },

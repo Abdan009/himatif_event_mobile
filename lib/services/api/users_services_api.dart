@@ -2,7 +2,6 @@ part of '../services.dart';
 
 class UsersServicesApi {
   static Future<ApiReturnValue<Users>> getUser({http.Client client}) async {
-    print('masuk');
     if (client == null) {
       client = http.Client();
     }
@@ -22,6 +21,31 @@ class UsersServicesApi {
 
     Users value = Users.fromJson(data['data']);
     return ApiReturnValue(value: value);
+  }
+
+  static Future<ApiReturnValue<List<Users>>> getAllUser(
+      {http.Client client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+    String url = baseURL + 'getAllUser';
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${Users.token}"
+      },
+    );
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please try again');
+    }
+
+    var data = jsonDecode(response.body);
+    print(data);
+    List<Users> listUser =
+        (data['data'] as Iterable).map((e) => Users.fromJson(e)).toList();
+
+    return ApiReturnValue(value: listUser);
   }
 
   static Future<ApiReturnValue<Users>> login(String email, String password,
@@ -126,5 +150,26 @@ class UsersServicesApi {
     } else {
       return ApiReturnValue(message: 'Uploading Profile Picture Failed');
     }
+  }
+
+  static Future<ApiReturnValue> logout({http.Client client}) async {
+    if (client == null) {
+      client = http.Client();
+    }
+
+    String url = baseURL + 'logout';
+
+    var response = await client.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${Users.token}"
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please try again');
+    }
+    return ApiReturnValue(value: true);
   }
 }

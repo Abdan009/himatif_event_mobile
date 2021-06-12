@@ -1,12 +1,21 @@
 part of '../pages.dart';
 
 class MahasiswaMainPage extends StatefulWidget {
+  final int currentIndex;
+  MahasiswaMainPage({this.currentIndex = 0});
   @override
   _MahasiswaMainPageState createState() => _MahasiswaMainPageState();
 }
 
 class _MahasiswaMainPageState extends State<MahasiswaMainPage> {
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.currentIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +25,7 @@ class _MahasiswaMainPageState extends State<MahasiswaMainPage> {
   }
 
   Widget tabs() {
-    final tabs = [HomeMhsPage(), EventMhsPage(), ProfilMhsPage()];
+    final tabs = [HomeMhsPage(), MainEventMhsPage(), ProfilMhsPage()];
     return tabs[currentIndex];
   }
 

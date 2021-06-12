@@ -11,9 +11,9 @@ class CategoryCubit extends Cubit<CategoryState> {
   Future<void> addCategory(CategoryEvent category) async {
     ApiReturnValue result = await CategoryServicesApi.addCategory(category);
     if (result.value != null) {
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Berhasil Ditambahkan', 'Category baru berhasil ditambahkan',
-          topic: 'mahasiswa');
+      // await NotifikasiServices.sendAndRetrieveMessage(
+      //     'Berhasil Ditambahkan', 'Category baru berhasil ditambahkan',
+      //     topic: 'mahasiswa');
       emit(CategoryLoaded(
           (state as CategoryLoaded).listCategory + [result.value]));
     } else {
@@ -45,9 +45,9 @@ class CategoryCubit extends Cubit<CategoryState> {
           return value;
         }
       }).toList();
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Berhasil Diupdate', 'Category berhasil diupdate',
-          topic: 'mahasiswa');
+      // await NotifikasiServices.sendAndRetrieveMessage(
+      //     'Berhasil Diupdate', 'Category berhasil diupdate',
+      //     topic: 'mahasiswa');
 
       emit(CategoryLoaded(listCategory));
     } else {
@@ -63,9 +63,9 @@ class CategoryCubit extends Cubit<CategoryState> {
           .listCategory
           .where((element) => element.id != id)
           .toList();
-      await NotifikasiServices.sendAndRetrieveMessage(
-          'Berhasil Dihapus', 'Category dihapus',
-          topic: 'mahasiswa');
+      // await NotifikasiServices.sendAndRetrieveMessage(
+      //     'Berhasil Dihapus', 'Category dihapus',
+      //     topic: 'mahasiswa');
 
       emit(CategoryLoaded(listCategory));
     } else {

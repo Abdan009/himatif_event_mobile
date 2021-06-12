@@ -32,6 +32,38 @@ class EventServicesApi {
     return ApiReturnValue(value: events);
   }
 
+  static Future<ApiReturnValue<List<EventInfo>>> getMyContibutionEvent(
+      int idUser,
+      {http.Client client}) async {
+    client ??= http.Client();
+
+    String url = baseURL + 'event?id_user=$idUser';
+    var response = await client.get(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${Users.token}"
+      },
+    );
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: 'Please try again');
+    }
+    var data = jsonDecode(response.body);
+
+    List<EventInfo> events = (data['data']['data'] as Iterable).map(
+      (e) {
+        EventInfo eventCopy = EventInfo.fromJson(e);
+        eventCopy = eventCopy.copyWith(
+          posterEvent: storageURL + eventCopy.posterEvent.toString(),
+        );
+        Users user = Users.fromJson(e['user']);
+        eventCopy.copyWith(user: user);
+        return eventCopy;
+      },
+    ).toList();
+    return ApiReturnValue(value: events);
+  }
+
   static Future<ApiReturnValue<EventInfo>> addEvent(
       EventInfo event, File filePoster,
       {http.Client client}) async {

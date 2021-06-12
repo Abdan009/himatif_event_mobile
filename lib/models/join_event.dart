@@ -4,13 +4,13 @@ class JoinEvent extends Equatable {
   final int id, idUser, idEvent;
   final Users user;
   final EventInfo event;
-  final String nameReader, nameMember, contactLeader, schema, note;
+  final String nameLeader, nameMember, contactLeader, schema, note;
   final DateTime timeCreate, timeUpdate;
   JoinEvent({
     this.id,
     @required this.idUser,
     @required this.idEvent,
-    @required this.nameReader,
+    @required this.nameLeader,
     @required this.nameMember,
     @required this.contactLeader,
     @required this.schema,
@@ -20,6 +20,29 @@ class JoinEvent extends Equatable {
     this.timeCreate,
     this.timeUpdate,
   });
+
+  JoinEvent copyWith({
+    Users user,
+    EventInfo event,
+    String nameLeader,
+    String nameMember,
+  }) {
+    return JoinEvent(
+      id: this.id,
+      idUser: this.idUser,
+      idEvent: this.idEvent,
+      user: user ?? this.user,
+      event: event ?? this.event,
+      nameLeader: nameLeader ?? this.nameLeader,
+      nameMember: nameMember ?? this.nameMember,
+      contactLeader: contactLeader ?? this.contactLeader,
+      schema: schema ?? this.schema,
+      note: note ?? this.note,
+      timeCreate: this.timeCreate,
+      timeUpdate: this.timeUpdate,
+    );
+  }
+
   @override
   List<Object> get props => [
         id,
@@ -27,7 +50,7 @@ class JoinEvent extends Equatable {
         idEvent,
         user,
         event,
-        nameReader,
+        nameLeader,
         nameMember,
         contactLeader,
         schema,
@@ -35,6 +58,33 @@ class JoinEvent extends Equatable {
         timeCreate,
         timeUpdate
       ];
+
+  factory JoinEvent.fromJson(Map<String, dynamic> data) {
+    return JoinEvent(
+      id: data['id'],
+      idUser: int.parse(data['id_user']),
+      idEvent: int.parse(data['id_event']),
+      nameLeader: data['name_leader'],
+      nameMember: data['name_member'],
+      contactLeader: data['contact_leader'],
+      schema: data['schema'],
+      note: data['note'],
+      timeCreate: DateTime.parse(data['created_at']),
+      timeUpdate: DateTime.parse(data['updated_at']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id_user': idUser,
+      'id_event': idEvent,
+      'name_leader': nameLeader,
+      'name_member': nameMember,
+      'contact_leader': contactLeader,
+      'schema': schema,
+      'note': note
+    };
+  }
 }
 
 List<JoinEvent> mockJointEvent = [
@@ -44,7 +94,7 @@ List<JoinEvent> mockJointEvent = [
     idEvent: mockEvent[0].id,
     user: mockUser[1],
     event: mockEvent[0],
-    nameReader: 'Muhamad Abdan',
+    nameLeader: 'Muhamad Abdan',
     nameMember: 'Yoga, Wahyu, Abu, Ibrahim ',
     contactLeader: '08971613199',
     schema: 'Bisnis',
@@ -56,7 +106,7 @@ List<JoinEvent> mockJointEvent = [
     idEvent: mockEvent[0].id,
     user: mockUser[2],
     event: mockEvent[0],
-    nameReader: 'Yoga',
+    nameLeader: 'Yoga',
     nameMember: 'Abdan, Wahyu, Abu, Ibrahim ',
     contactLeader: '08971613199',
     schema: 'Bisnis',
@@ -68,7 +118,7 @@ List<JoinEvent> mockJointEvent = [
     idEvent: mockEvent[1].id,
     user: mockUser[0],
     event: mockEvent[1],
-    nameReader: 'Wahyu',
+    nameLeader: 'Wahyu',
     nameMember: 'Yoga, Abdan, Abu, Ibrahim ',
     contactLeader: '08971613199',
     schema: 'Bisnis',
@@ -80,7 +130,7 @@ List<JoinEvent> mockJointEvent = [
     idEvent: mockEvent[1].id,
     user: mockUser[0],
     event: mockEvent[1],
-    nameReader: 'Abu',
+    nameLeader: 'Abu',
     nameMember: 'Yoga, Wahyu, Abdan, Ibrahim ',
     contactLeader: '08971613199',
     schema: 'Bisnis',

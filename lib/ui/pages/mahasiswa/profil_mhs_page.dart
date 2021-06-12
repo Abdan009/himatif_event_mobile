@@ -114,7 +114,7 @@ class ProfilMhsPage extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         onPressed: () async {
-                          // context.read<UsersCubit>().logout();
+                          context.read<UsersCubit>().logout();
                         },
                       ),
                     ),

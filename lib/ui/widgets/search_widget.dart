@@ -4,7 +4,6 @@ typedef SearchParm(String value);
 
 class SearchWidget extends StatefulWidget {
   final SearchParm search;
-  // final Function(String value) onChange;
   SearchWidget({
     @required this.search,
     // @required this.onChange,

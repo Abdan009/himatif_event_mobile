@@ -125,7 +125,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Get.to(ListUsahaPage());
+                  Get.to(ListUserPage());
                 },
                 child: Card(
                   child: Container(
@@ -144,34 +144,6 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                         ),
                         Text(
                           "Pengguna",
-                          style: orangeTextFont,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Get.to(ListUsahaPage());
-                },
-                child: Card(
-                  child: Container(
-                    margin: EdgeInsets.all(5),
-                    width: MediaQuery.of(context).size.width / 2 -
-                        (2 * defaultMargin) -
-                        5,
-                    height: 120,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.settings,
-                          color: mainColor,
-                          size: 80,
-                        ),
-                        Text(
-                          "Pengaturan",
                           style: orangeTextFont,
                         )
                       ],
@@ -241,7 +213,7 @@ class _HomeAdminPageState extends State<HomeAdminPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user.name,
+                              user?.name ?? "",
                               style: whiteTextFont.copyWith(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),

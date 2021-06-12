@@ -57,6 +57,15 @@ Widget loading(double sized) {
   );
 }
 
+String listBidangToString(List<String> listString) {
+  String b = '';
+
+  for (var string in listString) {
+    b += string + ((string != listString.last) ? ',' : '');
+  }
+  return b;
+}
+
 PreferredSizeWidget appBar(String title, {List<Widget> actions}) {
   return AppBar(
     iconTheme: IconThemeData(color: Colors.black),

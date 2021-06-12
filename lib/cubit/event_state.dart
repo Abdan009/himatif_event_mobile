@@ -11,9 +11,20 @@ class EventInitial extends EventState {
 
 class EventLoaded extends EventState {
   final List<EventInfo> listEvent;
-  EventLoaded({this.listEvent = const []});
+  final List<EventInfo> myContributionEvent;
+  EventLoaded({this.listEvent = const [], this.myContributionEvent = const []});
   @override
-  List<Object> get props => [listEvent];
+  List<Object> get props => [listEvent, myContributionEvent];
+
+  EventLoaded copyWith({
+    List<EventInfo> listEvent,
+    List<EventInfo> myContributionEvent,
+  }) {
+    return EventLoaded(
+      listEvent: listEvent ?? this.listEvent,
+      myContributionEvent: myContributionEvent ?? this.myContributionEvent,
+    );
+  }
 }
 
 class EventFailed extends EventState {

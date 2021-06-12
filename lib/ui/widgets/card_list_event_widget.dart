@@ -124,24 +124,24 @@ class CardListEventWidget extends StatelessWidget {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              loadingDialog(context).show();
+          // GestureDetector(
+          //   onTap: () {
+          //     loadingDialog(context).show();
 
-              context.read<EventCubit>().deleteEvent(event.id).then(
-                (value) {
-                  loadingDialog(context).hide();
-                },
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: defaultMargin),
-              child: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-            ),
-          )
+          //     context.read<EventCubit>().deleteEvent(event.id).then(
+          //       (value) {
+          //         loadingDialog(context).hide();
+          //       },
+          //     );
+          //   },
+          //   child: Container(
+          //     margin: EdgeInsets.only(right: defaultMargin),
+          //     child: Icon(
+          //       Icons.delete,
+          //       color: Colors.red,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

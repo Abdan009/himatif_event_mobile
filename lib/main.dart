@@ -22,8 +22,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await Firebase.initializeApp();
-  await FirebaseMessaging.instance.subscribeToTopic('mahasiswa');
-
   runApp(MyApp());
 }
 
@@ -51,6 +49,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => CurrentCubit(),
+        ),
+        BlocProvider(
+          create: (_) => JoineventCubit(),
         )
       ],
       child: StreamProvider.value(
